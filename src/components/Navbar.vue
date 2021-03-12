@@ -10,10 +10,10 @@
 				<div class="header__title">Api tester</div>
 				<nav :class="[ 'header__menu', { active: isActive, }, ]">
 					<ul class="header__list">
-						<li><a href="#" class="header__link">Create request</a></li>
-						<li><a href="#" class="header__link">My requests</a></li>
-						<li><a href="#" class="header__link">Sing Up</a></li>
-						<li><a href="#" class="header__link">Sing In</a></li>
+						<li><router-link to="/" class="header__link">Create request</router-link></li>
+						<li><router-link to="/requests" class="header__link">My requests</router-link></li>
+						<li><router-link to="/auth?type=singup" class="header__link">Sing Up</router-link></li>
+						<li><router-link to="/auth?type=singin" class="header__link">Sing In</router-link></li>
 					</ul>
 				</nav>
 			</div>
@@ -92,6 +92,16 @@ export default {
 			position: relative;
 
 			&:hover:after {
+				content: '';
+				display: block;
+				height: 2px;
+				width: 100%;
+				background: #097BED;
+				position: absolute;
+				bottom: -2px;
+			}
+
+			&.active:after {
 				content: '';
 				display: block;
 				height: 2px;

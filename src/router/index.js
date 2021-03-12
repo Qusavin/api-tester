@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory, } from 'vue-router';
 
-import Home from '../views/Home.vue';
+import CreateRequest from '../views/CreateRequest.vue';
 
 
 const routes = [
 	{
 		path     : '/',
-		name     : 'Home',
-		component: Home,
+		name     : 'CreateRequest',
+		component: CreateRequest,
 		meta     : {
 			layout      : 'main',
 			authRequired: false,
@@ -25,8 +25,10 @@ const routes = [
 ];
 
 const router = createRouter({
-	history: createWebHistory(),
+	history             : createWebHistory(),
 	routes,
+	linkActiveClass     : 'active',
+	linkExactActiveClass: 'active',
 });
 
 export default router;
