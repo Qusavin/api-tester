@@ -27,7 +27,8 @@ export default {
 };
 </script>
 
-
-<style lang="scss">
-
+<style scoped>
+	.mod {
+		background: #212121;
+	}
 </style>
