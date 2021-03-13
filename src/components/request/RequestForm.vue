@@ -1,21 +1,45 @@
 <template>
-	<div class="request-creator__form">
+	<form class="request-creator__form" @submit.prevent="submit">
 		<div class="request-creator__input">
-			<select>
+			<select v-model="method" id="method">
 				<option value="get">GET</option>
 				<option value="post">POST</option>
 			</select>
 
-			<input type="text">
+			<input type="text" v-model="url" id="url">
 		</div>
 
-		<button class="btn">Send</button>
-	</div>
+		<button class="btn" type="submit">Send</button>
+	</form>
 </template>
 
 <script>
-export default {
+import { ref, } from 'vue';
+import { useStore, } from 'vuex';
 
+
+export default {
+	setup() {
+		const store = useStore();
+
+		const method = ref('get');
+		const url = ref(null);
+
+		const submit = () => {
+			store.dispatch('request/createRequest', {
+				method: method.value,
+				url   : url.value,
+			});
+			method.value = 'get';
+			url.value = null;
+		};
+
+		return {
+			method,
+			url,
+			submit,
+		};
+	},
 };
 </script>
 

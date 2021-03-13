@@ -2,6 +2,7 @@ import axios from 'axios';
 
 
 const JWT_TOKEN = 'api-tester-jwt-token';
+const userIdLocal = 'api-tester-user-id';
 export default {
 	namespaced: true,
 	state() {
@@ -29,6 +30,7 @@ export default {
 		logout({ commit, }) {
 			commit('clearToken');
 			localStorage.removeItem(JWT_TOKEN);
+			localStorage.removeItem(userIdLocal);
 		},
 		async singin({ dispatch, commit, }, payload) {
 			try {
@@ -36,15 +38,16 @@ export default {
 					`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.VUE_APP_API_KEY}`,
 					{ ...payload, returnSecureToken: true, }
 				);
+				commit('setUserId', data.localId, { root: true, });
 				commit('setToken', data.idToken);
 			} catch (e) {
 				await dispatch('setSingInError', e.response.data.error.message);
+				throw new Error();
 			}
 		},
 		async singup({ commit, }, payload) {
 			try {
 				// Const username = payload.username;
-				debugger;
 				const newPayload = {
 					...Object.keys(payload).reduce((acc, key) => {
 						if (key === 'username') {
@@ -82,6 +85,9 @@ export default {
 				return true;
 			}
 			return false;
+		},
+		token(state) {
+			return state.token;
 		},
 	},
 };

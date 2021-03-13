@@ -1,5 +1,5 @@
 <template>
-	<form class="auth__body" @submit.prevent="submit">
+	<form class="auth__body" @submit.prevent="submit" novalidate>
 		<sing-in-error />
 		<input
 			:class="{ error: eErr, }"
@@ -59,9 +59,12 @@ export default {
 				.min(6, 'Password cannot be less than 6 characters')
 		);
 
-		const submit = handleSubmit(values => {
-			store.dispatch('auth/singin', values);
-			router.push('/');
+		const submit = handleSubmit(async values => {
+			try {
+				await store.dispatch('auth/singin', values);
+				router.push('/');
+			} catch (e) {
+			}
 		});
 
 		return {

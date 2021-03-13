@@ -1,5 +1,5 @@
 <template>
-	<form class="auth__body" @submit.prevent="submit">
+	<form class="auth__body" @submit.prevent="submit" novalidate>
 		<input
 			:class="{ error: eErr, }"
 			type="email"
