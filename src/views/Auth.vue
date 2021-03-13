@@ -3,62 +3,49 @@
 		<div class="auth__row">
 			<div class="auth__title">Api tester</div>
 			<div class="auth__tabs">
-				<button :class="[ 'tab', { active: isSingIn, }]" @click="toggleTabs('singin')">Sing In</button>
-				<button :class="[ 'tab', { active: !isSingIn, }]" @click="toggleTabs('singup')">Sing Up</button>
+				<button :class="[ 'tab', { active: isSingIn, }]" @click="toggleTabs('sing-in')">Sing In</button>
+				<button :class="[ 'tab', { active: !isSingIn, }]" @click="toggleTabs('sing-up')">Sing Up</button>
 			</div>
-			<form class="auth__body" @submit.prevent="submit">
-				<input
-					:class="{ error: eErr, }"
-					type="email"
-					id="email"
-					placeholder="Email"
-					v-if="!isSingIn"
-					v-model="eVal"
-					@blur="eBlur"
-				>
-				<p class="errorMessage" v-if="eErr && !isSingIn">{{eErr}}</p>
-
-				<input
-					:class="{ error: uErr, }"
-					type="text"
-					id="username"
-					placeholder="Username"
-					v-model="uVal"
-					@blur="uBlur"
-				>
-				<p class="errorMessage" v-if="uErr">{{uErr}}</p>
-
-				<input
-					:class="{ error: pErr, }"
-					type="password"
-					id="password"
-					placeholder="Password"
-					v-model="pVal"
-					@blur="pBlur"
-				>
-				<p class="errorMessage" v-if="pErr">{{pErr}}</p>
-
-				<button
-					class="btn"
-					type="submit"
-					:disabled="isSubmitting"
-				>{{ isSingIn ? 'Sing In' : 'Sing Up' }}</button>
-			</form>
+			<component :is="tab" />
 		</div>
 	</div>
 </template>
 
 <script>
-import { useAuthForms, } from '../use/auth-forms';
+import { ref, computed, } from 'vue';
+import { useRoute, useRouter, } from 'vue-router';
+
+import SingIn from '../components/auth/SingIn.vue';
+import SingUp from '../components/auth/SingUp.vue';
 
 
 export default {
 	setup() {
-		const fn = () => {};
+		const route = useRoute();
+		const router = useRouter();
+
+		const tab = ref('sing-in');
+		const isSingIn = computed(() => tab.value === 'sing-in');
+
+		if (route.query.type === 'singin') {
+			tab.value = 'sing-in';
+			router.replace({ 'query': null, });
+		} else if (route.query.type === 'singup') {
+			tab.value = 'sing-up';
+			router.replace({ 'query': null, });
+		}
+
+		const toggleTabs = tabb => tab.value = tabb;
 
 		return {
-			...useAuthForms(fn),
+			tab,
+			isSingIn,
+			toggleTabs,
 		};
+	},
+	components: {
+		SingIn,
+		SingUp,
 	},
 };
 </script>

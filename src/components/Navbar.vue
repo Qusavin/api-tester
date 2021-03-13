@@ -11,9 +11,10 @@
 				<nav :class="[ 'header__menu', { active: isActive, }, ]">
 					<ul class="header__list">
 						<li><router-link to="/" class="header__link">Create request</router-link></li>
-						<li><router-link to="/requests" class="header__link">My requests</router-link></li>
-						<li><router-link to="/auth?type=singup" class="header__link">Sing Up</router-link></li>
-						<li><router-link to="/auth?type=singin" class="header__link">Sing In</router-link></li>
+						<li v-if="isAuthenticated"><router-link to="/requests" class="header__link" >My requests</router-link></li>
+						<li v-if="!isAuthenticated"><router-link to="/auth?type=singup" class="header__link" >Sing Up</router-link></li>
+						<li v-if="!isAuthenticated"><router-link to="/auth?type=singin" class="header__link" >Sing In</router-link></li>
+						<li v-if="isAuthenticated"><a href="#" class="header__link" @click="logout" >Logout</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -22,19 +23,33 @@
 </template>
 
 <script>
-import { ref, } from 'vue';
+import { ref, computed, } from 'vue';
+import { useRouter, } from 'vue-router';
+import { useStore, } from 'vuex';
 
 
 export default {
 	setup() {
+		const store = useStore();
+		const router = useRouter();
+
+		const isAuthenticated = computed(() => store.getters['auth/isAuthenticated']);
+
 		const isActive = ref(false);
 		const toggleBurger = () => {
 			isActive.value = !isActive.value;
 		};
 
+		const logout = () => {
+			store.dispatch('auth/logout');
+			router.push('/auth');
+		};
+
 		return {
 			isActive,
 			toggleBurger,
+			logout,
+			isAuthenticated,
 		};
 	},
 };
