@@ -3,7 +3,7 @@
 		<div class="request-creator__input">
 			<select v-model="method" id="method">
 				<option value="get">GET</option>
-				<option value="post">POST</option>
+				<!-- <option value="post">POST</option> -->
 			</select>
 
 			<input type="text" v-model="url" id="url">

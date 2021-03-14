@@ -4,19 +4,7 @@
 			<button class="btn-tab">Body</button>
 		</div>
 		<div class="request-creator__response">
-			<vue-json-pretty
-				:data="response"
-				:selectableType="single"
-				:showSelectController="true"
-				:showLength="false"
-				:showLine="true"
-				:showDoubleQuotes="true"
-				:highlightSelectedNode="true"
-				:selectOnClickNode="true"
-				:collapsedOnClickBrackets="true"
-				:useCustomLinkFormatter="false"
-				:path="res"
-			/>
+			<request-boby :response="response" />
 			<url-error />
 		</div>
 	</div>
@@ -24,11 +12,10 @@
 
 <script>
 import { computed, } from 'vue';
-import VueJsonPretty from 'vue-json-pretty';
 import { useStore, } from 'vuex';
 
+import RequestBoby from './RequestBoby.vue';
 import UrlError from './UrlError.vue';
-import 'vue-json-pretty/lib/styles.css';
 
 
 
@@ -44,26 +31,13 @@ export default {
 	},
 	components: {
 		UrlError,
-		VueJsonPretty,
+		RequestBoby,
 	},
 };
 </script>
 
-<style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300&display=swap');
+<style lang="scss">
 
-.vjs-tree__node.has-selector {
-	padding: 0 0 0 10px;
-	font-family: 'IBM Plex Mono', monospace;
-	font-size: 15px;
-	line-height: 17px;
-	&:hover {
-		background: #097bed75;
-	}
-}
-.vjs-value.vjs-value__string {
-	color: #097BED;
-}
 
 .request-creator {
 	&__body {
@@ -93,7 +67,7 @@ export default {
 	&__response {
 		border-top: 1px solid #3B3B3B;
 		padding: 8px;
-		min-height: 200px;
+		min-height: 30vh;
 	}
 
 }

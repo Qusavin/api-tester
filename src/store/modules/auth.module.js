@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import store from '../index';
+
 
 const JWT_TOKEN = 'api-tester-jwt-token';
 const userIdLocal = 'api-tester-user-id';
@@ -29,6 +31,7 @@ export default {
 	actions: {
 		logout({ commit, }) {
 			commit('clearToken');
+			store.commit('request/setRequest', null);
 			localStorage.removeItem(JWT_TOKEN);
 			localStorage.removeItem(userIdLocal);
 		},

@@ -12,8 +12,8 @@
 					<ul class="header__list">
 						<li><router-link to="/" class="header__link">Create request</router-link></li>
 						<li v-if="isAuthenticated"><router-link to="/requests" class="header__link" >My requests</router-link></li>
-						<li v-if="!isAuthenticated"><router-link to="/auth?type=singup" class="header__link" >Sing Up</router-link></li>
-						<li v-if="!isAuthenticated"><router-link to="/auth?type=singin" class="header__link" >Sing In</router-link></li>
+						<li v-if="!isAuthenticated"><router-link to="/auth?type=singup" class="header__link" @click="clearRequestBody">Sing Up</router-link></li>
+						<li v-if="!isAuthenticated"><router-link to="/auth?type=singin" class="header__link" @click="clearRequestBody">Sing In</router-link></li>
 						<li v-if="isAuthenticated"><a href="#" class="header__link" @click="logout" >Logout</a></li>
 					</ul>
 				</nav>
@@ -33,6 +33,10 @@ export default {
 		const store = useStore();
 		const router = useRouter();
 
+		const clearRequestBody = () => {
+			store.commit('request/setRequest', null);
+		};
+
 		const isAuthenticated = computed(() => store.getters['auth/isAuthenticated']);
 
 		const isActive = ref(false);
@@ -42,7 +46,7 @@ export default {
 
 		const logout = () => {
 			store.dispatch('auth/logout');
-			router.push('/auth');
+			router.push('/');
 		};
 
 		return {
@@ -50,6 +54,7 @@ export default {
 			toggleBurger,
 			logout,
 			isAuthenticated,
+			clearRequestBody,
 		};
 	},
 };
