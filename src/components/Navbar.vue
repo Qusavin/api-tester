@@ -33,10 +33,6 @@ export default {
 		const store = useStore();
 		const router = useRouter();
 
-		const clearRequestBody = () => {
-			store.commit('request/setRequest', null);
-		};
-
 		const isAuthenticated = computed(() => store.getters['auth/isAuthenticated']);
 
 		const isActive = ref(false);
@@ -47,6 +43,13 @@ export default {
 		const logout = () => {
 			store.dispatch('auth/logout');
 			router.push('/');
+		};
+
+		const clearRequestBody = () => {
+			if (isActive.value) {
+				isActive.value = !isActive.value;
+			}
+			store.commit('request/setRequest', null);
 		};
 
 		return {
